@@ -1,0 +1,3790 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineStellar - Tu universo de películas</title>
+    <style>
+        /* Estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #0f0f1a;
+            color: #ffffff;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Estilos para la interfaz 1 - Login */
+        #login-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('https://wallpapercave.com/wp/wp4016023.jpg') no-repeat center center/cover;
+        }
+
+        .login-box {
+            background: rgba(20, 20, 40, 0.9);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            animation: fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .login-box h1 {
+            margin-bottom: 30px;
+            font-size: 2rem;
+            color: #00ffff;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .login-box input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+
+        .login-box button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            background: linear-gradient(45deg, #00ffff, #0088ff);
+            border: none;
+            border-radius: 5px;
+            color: #0f0f1a;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .login-box button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 255, 255, 0.4);
+        }
+
+        .login-box button:active {
+            transform: translateY(0);
+        }
+
+        .error-message {
+            color: #ff5555;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        /* Estilos para la interfaz 2 - Dashboard */
+        #dashboard-screen {
+            display: none;
+            min-height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://img.freepik.com/premium-photo/cinema-interior-with-big-screen-created-with-generative-ai_916303-3065.jpg') no-repeat center center/cover;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(10, 10, 20, 0.9);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-info span {
+            font-size: 0.9rem;
+            color: #00ffff;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            background: transparent;
+            border: 1px solid #00ffff;
+            color: #00ffff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.4), transparent);
+            transition: all 0.5s ease;
+        }
+
+        .nav-btn:hover::before {
+            left: 100%;
+        }
+
+        .nav-btn:hover {
+            background: rgba(0, 255, 255, 0.1);
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+
+        .content {
+            padding: 40px;
+            animation: fadeIn 1s ease;
+        }
+
+        .welcome-section {
+            background: rgba(20, 20, 40, 0.8);
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .welcome-section h2 {
+            color: #00ffff;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        .welcome-section p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .services {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .service-card {
+            background: rgba(20, 20, 40, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 255, 255, 0.3);
+        }
+
+        .service-card h3 {
+            color: #00ffff;
+            margin-bottom: 10px;
+        }
+
+        /* Estilos para la sección de redes sociales */
+        .social-section {
+            background: rgba(20, 20, 40, 0.8);
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 30px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .social-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        .social-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            background: rgba(30, 30, 60, 0.5);
+        }
+
+        .social-item:hover {
+            background: rgba(0, 255, 255, 0.1);
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            margin-right: 20px;
+            object-fit: contain;
+        }
+
+        .social-name {
+            font-weight: bold;
+            margin-right: 15px;
+            flex-grow: 1;
+            color: #00ffff;
+        }
+
+        .palomita-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid #00ffff;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+        }
+
+        .palomita-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Estilos para la interfaz 3 - Cartelera */
+        #movies-screen {
+            display: none;
+            min-height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://th.bing.com/th/id/R.cc9e672c8f8e18dc93857f6dff87131b?rik=qoSc6ik%2bla0sDA&pid=ImgRaw&r=0') no-repeat center center/cover;
+            padding-top: 20px;
+        }
+
+        .movies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+            padding: 20px;
+        }
+
+        .movie-card {
+            background: rgba(20, 20, 40, 0.9);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .movie-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 255, 255, 0.3);
+        }
+
+        .movie-poster {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+        }
+
+        .movie-info {
+            padding: 15px;
+        }
+
+        .movie-info h3 {
+            margin-bottom: 10px;
+            color: #00ffff;
+        }
+
+        .movie-info p {
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            color: #cccccc;
+        }
+
+        .duration {
+            display: flex;
+            align-items: center;
+            color: #aaaaaa;
+            font-size: 0.8rem;
+        }
+
+        .duration::before {
+            content: '⏱️';
+            margin-right: 5px;
+        }
+
+        /* Modal de película */
+        .movie-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 40px;
+        }
+
+        .modal-content {
+            background: rgba(20, 20, 40, 0.95);
+            max-width: 800px;
+            margin: 0 auto;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: rgba(10, 10, 20, 0.9);
+        }
+
+        .modal-header h2 {
+            color: #00ffff;
+            font-size: 1.8rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            color: #ff5555;
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .modal-poster {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .modal-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .detail-group h4 {
+            color: #00ffff;
+            margin-bottom: 10px;
+        }
+
+        .detail-group p {
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .buy-ticket-btn {
+            padding: 12px 25px;
+            background: linear-gradient(45deg, #00ffff, #0088ff);
+            border: none;
+            border-radius: 5px;
+            color: #0f0f1a;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            align-self: flex-end;
+        }
+
+        .buy-ticket-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 255, 255, 0.4);
+        }
+
+        /* Estilos para la interfaz 4 - Horarios y salas */
+        #schedule-screen {
+            display: none;
+            min-height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            padding-top: 20px;
+        }
+
+        .schedule-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(20, 20, 40, 0.9);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+        }
+
+        .schedule-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .schedule-header h2 {
+            color: #00ffff;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .schedule-header p {
+            color: #cccccc;
+        }
+
+        .schedule-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .schedule-option {
+            background: rgba(30, 30, 60, 0.8);
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .schedule-option:hover {
+            background: rgba(0, 255, 255, 0.1);
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+        }
+
+        .schedule-option.selected {
+            background: rgba(0, 255, 255, 0.2);
+            border: 1px solid #00ffff;
+        }
+
+        .schedule-option h4 {
+            color: #00ffff;
+            margin-bottom: 5px;
+        }
+
+        .ticket-selection {
+            background: rgba(30, 30, 60, 0.8);
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 30px;
+        }
+
+        .ticket-selection h3 {
+            color: #00ffff;
+            margin-bottom: 15px;
+        }
+
+        .ticket-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .ticket-type {
+            flex: 1;
+        }
+
+        .ticket-quantity {
+            display: flex;
+            align-items: center;
+        }
+
+        .quantity-btn {
+            background: rgba(0, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quantity-btn:hover {
+            background: rgba(0, 255, 255, 0.4);
+        }
+
+        .quantity-value {
+            margin: 0 15px;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .confirm-btn {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            background: linear-gradient(45deg, #00ffff, #0088ff);
+            border: none;
+            border-radius: 5px;
+            color: #0f0f1a;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .confirm-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 255, 255, 0.4);
+        }
+
+        /* Estilos para la interfaz 5 - Pago */
+        #payment-screen {
+            display: none;
+            min-height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1607083206968-13611e3d76db?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            padding-top: 20px;
+        }
+
+        .payment-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(20, 20, 40, 0.9);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+        }
+
+        .payment-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .payment-header h2 {
+            color: #00ffff;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .payment-methods {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .payment-method {
+            width: 60px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .payment-method:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .payment-method.selected {
+            background: rgba(0, 255, 255, 0.2);
+            border: 1px solid #00ffff;
+        }
+
+        .payment-method img {
+            max-width: 80%;
+            max-height: 80%;
+        }
+
+        .payment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 5px;
+            color: #00ffff;
+        }
+
+        .form-group input {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .complete-payment-btn {
+            padding: 12px;
+            margin-top: 20px;
+            background: linear-gradient(45deg, #00ffff, #0088ff);
+            border: none;
+            border-radius: 5px;
+            color: #0f0f1a;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .complete-payment-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 255, 255, 0.4);
+        }
+
+        .confirmation-message {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 200, 100, 0.2);
+            border: 1px solid #00cc66;
+            border-radius: 5px;
+            margin-top: 20px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .confirmation-message p {
+            color: #00ff88;
+            margin-bottom: 10px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 15px;
+            }
+
+            .nav-links {
+                margin-top: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .modal-details {
+                grid-template-columns: 1fr;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .schedule-options {
+                grid-template-columns: 1fr;
+            }
+            
+            /* Estilos responsive para la sección de redes sociales */
+            .social-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .social-icon {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+            
+            .social-name {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Interfaz 1 - Login -->
+<style>
+    /* Sistema de partículas estelares */
+    #particles-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1; /* Entre fondo y contenido */
+        pointer-events: none;
+    }
+    
+    .particle {
+        position: absolute;
+        background: #ffd700;
+        border-radius: 50%;
+        opacity: 0;
+        animation: twinkle 5s infinite ease-in-out;
+        box-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+    }
+    
+    .particle:nth-child(3n+1) {
+        background: #ff8c00;
+        animation-duration: 6s;
+    }
+    
+    .particle:nth-child(5n+1) {
+        background: #ffffff;
+        animation-duration: 7s;
+    }
+    
+    @keyframes twinkle {
+        0%, 100% {
+            opacity: 0;
+            transform: scale(0);
+        }
+        50% {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    /* Estilo CineStellar - Temática de cine */
+    #login-screen {
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.9)), 
+                    url('https://wallpapercave.com/wp/wp4016023.jpg') no-repeat center/cover;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Arial', sans-serif;
+        position: relative; /* Necesario para posicionar el footer */
+        overflow: hidden;
+    }
+    .login-box {
+        background: rgba(10, 10, 20, 0.85);
+        width: 90%;
+        max-width: 400px;
+        padding: 2.5rem;
+        border-radius: 10px;
+        box-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
+        border-top: 2px solid #ffd700;
+        text-align: center;
+        margin-bottom: 50px; /* Espacio para el footer */
+        position: relative;
+        z-index: 2; /* Encima de las partículas */
+    }
+    .login-box h1 {
+        color: #ffd700;
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        letter-spacing: 1px;
+    }
+    .login-box p {
+        color: #aaa;
+        margin-bottom: 2rem;
+        font-style: italic;
+    }
+    #login-form input {
+        width: 100%;
+        padding: 12px 15px;
+        margin-bottom: 5px;
+        border: none;
+        border-radius: 5px;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border-left: 3px solid transparent;
+        transition: all 0.3s;
+    }
+    #login-form input:focus {
+        outline: none;
+        border-left: 3px solid #ffd700;
+        background: rgba(255, 255, 255, 0.2);
+    }
+    #login-form input::placeholder {
+        color: #ccc;
+    }
+    .error-message {
+        color: #ff6b6b;
+        font-size: 0.8rem;
+        text-align: left;
+        margin-top: -5px;
+        margin-bottom: 10px;
+        display: none;
+    }
+    #login-form button {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(to right, #ff8c00, #ffd700);
+        color: #111;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    #login-form button:hover {
+        background: linear-gradient(to right, #ffd700, #ff8c00);
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+    }
+    /* Footer corregido */
+    .cine-footer {
+        position: absolute;
+        bottom: 20px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        color: #ffd700; /* Color dorado como "CineStellar" */
+        font-size: 0.8rem;
+        text-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
+        padding: 0 20px;
+        z-index: 2; /* Encima de las partículas */
+    }
+    .cine-footer span {
+        font-style: italic;
+    }
+</style>
+
+<div id="login-screen">
+    <!-- Contenedor de partículas -->
+    <div id="particles-container"></div>
+    
+    <div class="login-box">
+        <h1>CineStellar</h1>
+        <p>Bienvenido a tu universo de películas</p>
+        <form id="login-form">
+            <input type="text" id="name" placeholder="Nombre completo" required>
+            <div class="error-message" id="name-error">Por favor ingresa tu nombre</div>
+            
+            <input type="email" id="email" placeholder="Correo electrónico" required>
+            <div class="error-message" id="email-error">Por favor ingresa un correo válido</div>
+            
+            <button type="submit">INICIAR SESIÓN</button>
+        </form>
+    </div>
+
+    <!-- Footer Inicial -->
+    <div class="cine-footer">
+        &copy; 2025 <span>CineStellar El Salvador</span>. Todos los derechos reservados (Proyecto DPW).
+    </div>
+    
+    <script>
+        // Generador de partículas estelares
+        document.addEventListener('DOMContentLoaded', function() {
+            const particlesContainer = document.getElementById('particles-container');
+            const particleCount = 120;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Tamaño aleatorio entre 1px y 4px
+                const size = Math.random() * 3 + 1;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Posición aleatoria en toda la pantalla
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                // Retraso de animación aleatorio
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        });
+    </script>
+</div>
+
+    <!-- Interfaz 2 - Dashboard -->
+<style>
+    /* Sistema de partículas estelares - CORREGIDO */
+    #particles-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;  /* Cambiado a 0 para estar sobre el fondo */
+        pointer-events: none;
+    }
+    
+    .particle {
+        position: absolute;
+        background: #ffd700;
+        border-radius: 50%;
+        opacity: 0;
+        animation: twinkle 5s infinite ease-in-out;
+        box-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+    }
+    
+    .particle:nth-child(3n+1) {
+        background: #ff8c00;
+        animation-duration: 6s;
+    }
+    
+    .particle:nth-child(5n+1) {
+        background: #ffffff;
+        animation-duration: 7s;
+    }
+    
+    @keyframes twinkle {
+        0%, 100% {
+            opacity: 0;
+            transform: scale(0);
+        }
+        50% {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+    
+    /* Ajustes para el contenido sobre las partículas */
+    #dashboard-screen {
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.95)), 
+                    url('https://wallpaperaccess.com/full/3967998.jpg') no-repeat center/cover;
+    }
+    
+    /* Capas de z-index ajustadas */
+    .navbar {
+        background: rgba(10, 10, 20, 0.9);
+        padding: 15px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+        position: relative;
+        z-index: 3;  /* Mayor prioridad que las partículas */
+    }
+
+    .content {
+        position: relative;
+        z-index: 2;  /* Mayor prioridad que las partículas */
+    }
+
+    /* Resto de estilos existentes */
+    .user-info {
+        color: #ffd700;
+    }
+
+    #display-email {
+        color: #aaa;
+        font-size: 0.8rem;
+        display: block;
+        margin-top: 3px;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 15px;
+    }
+
+    .nav-btn {
+        background: rgba(255, 255, 255, 0.1);
+        color: #ffd700;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s;
+        position: relative;
+        z-index: 10;  /* Máxima prioridad para botones */
+    }
+
+    .nav-btn:hover {
+        background: rgba(255, 215, 0, 0.2);
+    }
+
+    .content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        font-family: 'Arial', sans-serif;
+    }
+    
+    .welcome-section {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        color: #ffffff;
+    }
+    
+    .title-container {
+        text-align: center;
+        margin-bottom: 30px;
+        position: relative;
+    }
+    
+    .cinematic-title {
+        font-family: 'Montserrat', 'Arial Narrow', sans-serif;
+        display: inline-flex;
+        align-items: center;
+        position: relative;
+        color: #fff;
+        text-shadow: 0 0 8px rgba(255, 215, 0, 0.7);
+        letter-spacing: 2px;
+        padding: 15px 30px;
+        background: linear-gradient(90deg, 
+                        rgba(20,20,30,0.8) 0%, 
+                        rgba(60,10,30,0.9) 50%, 
+                        rgba(20,20,30,0.8) 100%);
+        border: 1px solid #ffd700;
+        border-radius: 5px;
+        box-shadow: 0 0 25px rgba(255, 215, 0, 0.4),
+                    inset 0 0 15px rgba(255, 215, 0, 0.2);
+        transform-style: preserve-3d;
+        perspective: 500px;
+    }
+    
+    .welcome-text {
+        margin-right: 15px;
+        font-size: 1.8rem;
+        font-weight: 300;
+        text-transform: uppercase;
+        background: linear-gradient(to right, #ffd700, #ffffff, #ffd700);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        animation: shine 3s infinite;
+    }
+    
+    .cinema-logo {
+        height: 50px;
+        filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.7));
+        transition: all 0.5s ease;
+    }
+    
+    .film-grain {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noise)" opacity="0.1"/></svg>');
+        pointer-events: none;
+    }
+    
+    .spotlight {
+        position: absolute;
+        top: -50%;
+        left: -25%;
+        width: 150%;
+        height: 200%;
+        background: radial-gradient(ellipse at center, 
+                        rgba(255,215,0,0.3) 0%, 
+                        rgba(255,215,0,0.1) 40%, 
+                        transparent 70%);
+        animation: pan 8s infinite alternate;
+        pointer-events: none;
+    }
+    
+    @keyframes shine {
+        0% { background-position: -100%; }
+        100% { background-position: 100%; }
+    }
+    
+    @keyframes pan {
+        0% { transform: translateX(-20%) rotate(-5deg); }
+        100% { transform: translateX(20%) rotate(5deg); }
+    }
+    
+    .cinema-logo:hover {
+        transform: scale(1.1) rotateY(15deg);
+        filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.9));
+    }
+    
+    @media (max-width: 768px) {
+        .cinematic-title {
+            flex-direction: column;
+            padding: 20px;
+        }
+        
+        .welcome-text {
+            margin-right: 0;
+            margin-bottom: 10px;
+            font-size: 1.4rem;
+        }
+        
+        .cinema-logo {
+            height: 40px;
+        }
+    }
+    
+    .welcome-content {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        font-family: 'Montserrat', sans-serif;
+        line-height: 1.8;
+        position: relative;
+        background: rgba(10, 10, 20, 0.7);
+        border-radius: 10px;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(255, 215, 0, 0.3);
+    }
+    
+    .welcome-content:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('https://www.transparenttextures.com/patterns/film-strip.png');
+        opacity: 0.1;
+        pointer-events: none;
+        border-radius: 10px;
+    }
+    
+    .welcome-content p {
+        font-size: 1.1rem;
+        margin-bottom: 25px;
+        color: #e0e0e0;
+        position: relative;
+        padding-left: 20px;
+        border-left: 2px solid rgba(255, 215, 0, 0.5);
+    }
+    
+    .brand-highlight {
+        color: #ffd700;
+        font-weight: bold;
+        text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+    }
+    
+    .tech-highlight {
+        color: #00e5ff;
+        font-weight: 500;
+        text-shadow: 0 0 5px rgba(0, 229, 255, 0.3);
+    }
+    
+    .event-highlight {
+        color: #ff6b6b;
+        font-weight: 500;
+        text-shadow: 0 0 5px rgba(255, 107, 107, 0.3);
+    }
+    
+    .fade-in-text {
+        opacity: 0;
+        animation: fadeIn 1s ease-out forwards;
+    }
+    
+    .delay-1 {
+        animation-delay: 0.5s;
+    }
+    
+    .delay-2 {
+        animation-delay: 1s;
+    }
+    
+    @keyframes fadeIn {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .welcome-content {
+            padding: 15px;
+        }
+        
+        .welcome-content p {
+            font-size: 1rem;
+            padding-left: 15px;
+        }
+    }
+    
+    .services-title {
+        color: #00ffff;
+        margin-bottom: 30px;
+        text-align: center;
+        font-size: 2.2rem;
+        text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        font-family: 'Arial Black', sans-serif;
+        letter-spacing: 1px;
+        position: relative;
+    }
+    
+    .services-title:after {
+        content: "";
+        display: block;
+        width: 100px;
+        height: 3px;
+        background: linear-gradient(90deg, transparent, #00ffff, transparent);
+        margin: 15px auto;
+    }
+    
+    .services {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 25px;
+        padding: 20px;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+    
+    .service-card {
+        background: rgba(20, 20, 40, 0.8);
+        border-radius: 10px;
+        padding: 25px;
+        text-align: center;
+        transition: transform 0.3s, box-shadow 0.3s;
+        border: 1px solid rgba(0, 255, 255, 0.2);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .service-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 25px rgba(0, 255, 255, 0.2);
+        border-color: rgba(0, 255, 255, 0.5);
+    }
+    
+    .service-card:before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(0,255,255,0.1) 0%, transparent 70%);
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+    
+    .service-card:hover:before {
+        opacity: 1;
+    }
+    
+    .service-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 20px;
+        background: rgba(0, 255, 255, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid #00ffff;
+    }
+    
+    .service-icon img {
+        width: 50px;
+        height: 50px;
+        filter: drop-shadow(0 0 5px rgba(0, 255, 255, 0.7));
+    }
+    
+    .service-card h3 {
+        color: #00ffff;
+        margin-bottom: 15px;
+        font-size: 1.4rem;
+    }
+    
+    .service-card p {
+        color: #e0e0e0;
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+    
+    @media (max-width: 768px) {
+        .services {
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+    }
+    
+    @media (max-width: 600px) {
+        .services {
+            grid-template-columns: 1fr;
+        }
+        
+        .service-card {
+            padding: 20px;
+        }
+    }
+    
+    .social-section {
+        margin-top: 40px;
+        padding: 20px;
+        background: rgba(10, 10, 20, 0.7);
+        border-radius: 10px;
+        border-top: 1px solid rgba(255, 215, 0, 0.3);
+    }
+    
+    .social-section h2 {
+        color: #00ffff;
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 1.8rem;
+        text-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
+    }
+    
+    .social-list {
+        list-style: none;
+        padding: 0;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    
+    .social-item {
+        display: flex;
+        align-items: center;
+        padding: 15px 20px;
+        margin-bottom: 15px;
+        background: rgba(20, 20, 40, 0.6);
+        border-radius: 8px;
+        transition: all 0.3s;
+        border: 1px solid rgba(255, 215, 0, 0.2);
+    }
+    
+    .social-item:hover {
+        background: rgba(20, 20, 40, 0.8);
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        border-color: rgba(255, 215, 0, 0.4);
+    }
+    
+    .social-icon {
+        width: 40px;
+        height: 40px;
+        margin-right: 15px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .social-icon img {
+        width: 24px;
+        height: 24px;
+    }
+    
+    .social-name {
+        flex: 1;
+        color: #e0e0e0;
+        font-size: 1rem;
+    }
+    
+    .palomita-circle {
+        width: 40px;
+        height: 40px;
+        background: rgba(255, 215, 0, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .palomita-circle img {
+        width: 24px;
+        height: 24px;
+        filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(0deg);
+    }
+</style>
+
+<div id="dashboard-screen">
+    <!-- Contenedor de partículas estelares -->
+    <div id="particles-container"></div>
+    
+    <nav class="navbar">
+        <div class="user-info">
+            <span id="display-name">Usuario</span>
+            <span id="display-email">usuario@example.com</span>
+        </div>
+        <div class="nav-links">
+            <button class="nav-btn" id="home-btn">Inicio</button>
+            <button class="nav-btn" id="movies-btn">Cartelera</button>
+            <button class="nav-btn" id="payments-btn">Pagos Electrónicos</button>
+        </div>
+    </nav>
+
+    <div class="content">
+        <section class="welcome-section">
+            <div class="title-container">
+                <h2 class="cinematic-title">
+                    <span class="welcome-text">Bienvenido a CineStellar</span> 
+                    <img src="https://www.pngplay.com/wp-content/uploads/6/Cinema-Icon-PNG-Clipart-Background.png" alt="CineStellar" class="cinema-logo">
+                    <span class="film-grain"></span>
+                    <span class="spotlight"></span>
+                </h2>
+            </div>
+            
+            <div class="welcome-content">
+                <p class="fade-in-text">En <span class="brand-highlight">CineStellar</span> nos apasiona el séptimo arte y queremos compartir esa pasión contigo. Desde 1995, hemos sido el destino preferido para los amantes del cine en nuestra ciudad, ofreciendo una experiencia cinematográfica inigualable.</p>
+                
+                <p class="fade-in-text delay-1">Nuestras modernas salas cuentan con tecnología de última generación, incluyendo <span class="tech-highlight">sonido Dolby Atmos</span> y <span class="tech-highlight">pantallas 4K HDR</span>, para que disfrutes cada detalle de tus películas favoritas como nunca antes.</p>
+                
+                <p class="fade-in-text delay-2">Además de nuestras proyecciones regulares, ofrecemos <span class="event-highlight">eventos especiales</span> como estrenos exclusivos, maratones de sagas famosas y noches temáticas donde puedes venir disfrazado de tus personajes favoritos.</p>
+            </div>
+            
+            <div style="text-align: center; margin: 30px 0;">
+                <img src="https://img.freepik.com/vector-gratis/sala-cine-cine-asientos-pantalla-ancha_107791-16264.jpg" 
+                     alt="CineStellar experiencia cinematográfica" 
+                     style="width: 100%;
+                            max-width: 800px;
+                            height: auto;
+                            border-radius: 12px;
+                            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+                            display: block;
+                            margin: 0 auto;">
+            </div>
+            
+            <h2 class="services-title">Nuestros Servicios</h2>
+            <div class="services">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <img src="https://cdn-icons-png.flaticon.com/512/1828/1828884.png" alt="Salas Premium">
+                    </div>
+                    <h3>Salas Premium</h3>
+                    <p>Asientos reclinables, mantas calientes y servicio a butaca para una experiencia de lujo.</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <img src="https://images.pling.com/cache/400x400-2/img/00/00/59/73/18/2110036/dolby-icon.png" alt="Dolby Atmos">
+                    </div>
+                    <h3>Dolby Atmos</h3>
+                    <p>Sonido envolvente que te transporta directamente a la acción de la película.</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <img src="https://cdn-icons-png.flaticon.com/512/1046/1046784.png" alt="Snacks Gourmet">
+                    </div>
+                    <h3>Snacks Gourmet</h3>
+                    <p>Desde palomitas clásicas hasta opciones gourmet y saludables para todos los gustos.</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <img src="https://cdn-icons-png.flaticon.com/512/3296/3296409.png" alt="Eventos Especiales">
+                    </div>
+                    <h3>Eventos Especiales</h3>
+                    <p>Noches de estreno, maratones y encuentros con directores y actores.</p>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">
+                        <img src="https://cdn-icons-png.flaticon.com/512/9456/9456939.png" alt="Realidad Virtual">
+                    </div>
+                    <h3>Experiencia VR</h3>
+                    <p>Sumérgete en películas con nuestras salas de realidad virtual y vive la acción en 360°.</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <img src="https://cdn-icons-png.flaticon.com/512/1807/1807601.png" alt="Club Infantil">
+                    </div>
+                    <h3>Club Infantil</h3>
+                    <p>Funciones especiales para niños con actividades recreativas y snacks saludables.</p>
+                </div>
+            </div>
+            
+            <!-- Sección de redes sociales integrada -->
+            <div class="social-section">
+                <h2>Síguenos en Redes Sociales</h2>
+                <ul class="social-list">
+                    <li class="social-item">
+                        <div class="social-icon">
+                            <img src="https://cdn-icons-png.flaticon.com/512/124/124010.png" alt="Facebook">
+                        </div>
+                        <span class="social-name">Facebook /CineStellar /OficialPage</span>
+                        <div class="palomita-circle">
+                            <img src="https://cdn-icons-png.flaticon.com/512/5483/5483533.png" alt="Palomitas">
+                        </div>
+                    </li>
+                    <li class="social-item">
+                        <div class="social-icon">
+                            <img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter">
+                        </div>
+                        <span class="social-name">Twitter /CineStellar /OficialPage</span>
+                        <div class="palomita-circle">
+                            <img src="https://cdn-icons-png.flaticon.com/512/5483/5483533.png" alt="Palomitas">
+                        </div>
+                    </li>
+                    <li class="social-item">
+                        <div class="social-icon">
+                            <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram">
+                        </div>
+                        <span class="social-name">Instagram /CineStellar /OficialPage</span>
+                        <div class="palomita-circle">
+                            <img src="https://cdn-icons-png.flaticon.com/512/5483/5483533.png" alt="Palomitas">
+                        </div>
+                    </li>
+                    <li class="social-item">
+                        <div class="social-icon">
+                            <img src="https://cdn-icons-png.flaticon.com/512/3046/3046126.png" alt="Tik Tok">
+                        </div>
+                        <span class="social-name">Tik Tok /CineStellar /OficialPage</span>
+                        <div class="palomita-circle">
+                            <img src="https://cdn-icons-png.flaticon.com/512/5483/5483533.png" alt="Palomitas">
+                        </div>
+                    </li>
+                    <li class="social-item">
+                        <div class="social-icon">
+                            <img src="https://static.vecteezy.com/system/resources/previews/017/178/337/non_2x/location-map-marker-icon-symbol-on-transparent-background-free-png.png" alt="Ubicacion">
+                        </div>
+                        <span class="social-name">Dirección / Final 15 Avenida Norte, Distrito #3, San Salvador, El Salvador</span>
+                        <div class="palomita-circle">
+                            <img src="https://cdn-icons-png.flaticon.com/512/5483/5483533.png" alt="Palomitas">
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+    </div>
+    
+    <script>
+        // Generador de partículas estelares
+        document.addEventListener('DOMContentLoaded', function() {
+            const particlesContainer = document.getElementById('particles-container');
+            const particleCount = 150;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Tamaño aleatorio entre 1px y 5px
+                const size = Math.random() * 4 + 1;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Posición aleatoria en toda la pantalla
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                // Retraso de animación aleatorio
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        });
+    </script>
+</div>
+
+    <!-- Interfaz 3 - Cartelera -->
+<div id="movies-screen" class="cinema-theme">
+    <!-- Barra de navegación estilo cine -->
+    <nav class="cinema-navbar">
+        <div class="user-info">
+            <span id="movies-display-name" class="neon-text">Usuario</span>
+            <span id="movies-display-email" class="neon-text-alt">usuario@example.com</span>
+        </div>
+        <div class="nav-links">
+            <button class="nav-btn cinema-btn" id="movies-home-btn">
+                <i class="fas fa-home"></i> Inicio
+            </button>
+            <button class="nav-btn cinema-btn active" id="movies-movies-btn">
+                <i class="fas fa-film"></i> Cartelera
+            </button>
+            <button class="nav-btn cinema-btn" id="movies-payments-btn">
+                <i class="fas fa-ticket-alt"></i> Pagos
+            </button>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <div class="cinema-container">
+        <h1 class="cinema-title">Cartelera de Estrenos</h1>
+        
+        <!-- Filtros -->
+        <div class="cinema-filters">
+            <div class="filter-group">
+                <i class="fas fa-filter"></i>
+                <select class="cinema-select" id="genre-filter">
+                    <option value="all">Todos los géneros</option>
+                    <option value="ciencia_ficcion">Ciencia Ficción</option>
+                    <option value="infantil">Infantil</option>
+                    <option value="accion">Acción</option>
+                    <option value="terror">Terror</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <i class="fas fa-calendar-alt"></i>
+                <select class="cinema-select" id="upcoming-filter">
+                    <option value="all">Próximos estrenos</option>
+                    <option value="weekend">Este fin de semana</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- Botón Volver (oculto inicialmente) -->
+        <button id="back-button" class="back-button" onclick="showMainMovies()" style="display: none;">
+            <i class="fas fa-arrow-left"></i> Volver a cartelera
+        </button>
+        
+        <!-- Grid de películas principal -->
+        <div class="cinema-grid" id="main-movies-grid">
+            <!-- Película 1 -->
+            <div class="cinema-card" onclick="openMovieModal('Una Pelicula de Minecraft', 'Cuatro inadaptados se ven arrastrados a través de un misterioso portal al Mundo Exterior: un extraño país de las maravillas cúbico que se nutre de la imaginación.', '2h 15m', 'Jared Hess', '2025', 'Infantil', 'https://nintenduo.com/wp-content/uploads/2024/09/Pelicula-Minecraft-Trailer.webp')">
+                <div class="card-header">
+                    <img src="https://www.gamereactor.es/media/54/finalminecraftmovie_4485443.jpg" alt="Una Pelicula de Minecraft" class="movie-poster">
+                    <div class="movie-badge">ESTRENO</div>
+                </div>
+                <div class="card-body">
+                    <h3>Una Pelicula de Minecraft</h3>
+                    <p class="movie-description">Una odisea en un mundo muy cuadrado.</p>
+                    <div class="movie-details">
+                        <span class="duration"><i class="far fa-clock"></i> 2h 15m</span>
+                        <span class="rating"><i class="fas fa-star"></i> 4.8</span>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="cinema-btn-sm">Ver horarios</button>
+                </div>
+            </div>
+
+            <!-- Película 2 -->
+            <div class="cinema-card" onclick="openMovieModal('Lilo y Stitch 2025', 'Narra la historia de una niña hawaiana solitaria y un extraterrestre fugitivo que la ayuda a recomponer su familia rota.', '1h 58m', 'Dean Fleischer-Camp', '2025', 'Infantil-Comedia', 'https://radiocentro.com.ec/wp-content/uploads/2025/05/LILO-Y-STITCH-LIVE-ACTION.jpg')">
+                <div class="card-header">
+                    <img src="https://media2.firstshowing.net/firstshowing/img16/LiloStitchPostermainimgbig5991.jpg?width=599" alt="Lilo y Stitch 2025" class="movie-poster">
+                </div>
+                <div class="card-body">
+                    <h3>Lilo y Stitch 2025</h3>
+                    <p class="movie-description">Una comedia del 2001 con un nuevo aire pero el mismo humor de Stitch.</p>
+                    <div class="movie-details">
+                        <span class="duration"><i class="far fa-clock"></i> 1h 58m</span>
+                        <span class="rating"><i class="fas fa-star"></i> 4.6</span>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="cinema-btn-sm">Ver horarios</button>
+                </div>
+            </div>
+
+            <!-- Película 3 -->
+            <div class="cinema-card" onclick="openMovieModal('Misión imposible: Sentencia final', 'Ethan Hunt enfrenta su misión más peligrosa hasta la fecha, con un enfoque en la inteligencia artificial y un elenco estelar.', '1h 45m', 'Christopher McQuarrie', '2025', 'Accion-Ciencia Ficcion', 'https://static01.nyt.com/images/2025/05/14/espanol/mission-impossible-kvcf-ES-copy1/mission-impossible-kvcf-superJumbo.jpg?quality=75&auto=webp')">
+                <div class="card-header">
+                    <img src="https://hips.hearstapps.com/hmg-prod/images/mission-impossible-the-final-reckoning-565388979-large-67322667c17b0.jpg?crop=1xw:1xh;center,top&resize=980:*" alt="Misión imposible: Sentencia final" class="movie-poster">
+                </div>
+                <div class="card-body">
+                    <h3>Misión imposible: Sentencia final</h3>
+                    <p class="movie-description">Sigue la lucha por encontrar al Sebastopol y liberarlos de la IA.</p>
+                    <div class="movie-details">
+                        <span class="duration"><i class="far fa-clock"></i> 1h 45m</span>
+                        <span class="rating"><i class="fas fa-star"></i> 4.4</span>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="cinema-btn-sm">Ver horarios</button>
+                </div>
+            </div>
+
+            <!-- Película 4 -->
+            <div class="cinema-card" onclick="openMovieModal('F1', 'Sonny Hayes (Brad Pitt), es un piloto de Fórmula 1 que corrió en la década de 1990, pero sufre un terrible accidente que lo obliga a retirarse de la máxima categoría  y comenzar a competir en otras disciplinas.', '1h 45m', 'Joseph Kosinski', '2025', 'Accion', 'https://cinepremiere.com.mx/wp-content/uploads/2024/07/F1-pelicula-trailer-estreno-brad-pitt.jpg')">
+                <div class="card-header">
+                    <img src="https://media.ambito.com/p/4f411d9bf3fc9b4a838912805d646267/adjuntos/239/imagenes/041/640/0041640385/730x0/smart/imagepng.png" alt="F1" class="movie-poster">
+                </div>
+                <div class="card-body">
+                    <h3>F1</h3>
+                    <p class="movie-description">Consquitar la categoria reina del mundo motor, munca fue mas emocionate.</p>
+                    <div class="movie-details">
+                        <span class="duration"><i class="far fa-clock"></i> 1h 45m</span>
+                        <span class="rating"><i class="fas fa-star"></i> 4.0</span>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="cinema-btn-sm">Ver horarios</button>
+                </div>
+            </div>
+
+            <!-- Película 5 -->
+            <div class="cinema-card" onclick="openMovieModal('Ballerina', ' La trama sigue a Eve interpretada por Ana de Armas, una bailarina y asesina, quien busca venganza contra aquellos que mataron a su familia.', '1h 45m', 'Len Wiseman', '2025', 'Accion', 'https://www.articulo14.es/main-files/uploads/2025/06/ana-armas-interpreta-eve-macarro-protagonista-ballerina_98.webp')">
+                <div class="card-header">
+                    <img src="https://atm.fra1.digitaloceanspaces.com/movies/ballerina.png" alt="Ballerina" class="movie-poster">
+                </div>
+                <div class="card-body">
+                    <h3>Ballerina</h3>
+                    <p class="movie-description">Es un spin-off de la franquicia de John Wick, y se desarrolla entre los eventos de John Wick: Chapter 3 - Parabellum (2019) y John Wick: Chapter 4 (2023).</p>
+                    <div class="movie-details">
+                        <span class="duration"><i class="far fa-clock"></i> 1h 45m</span>
+                        <span class="rating"><i class="fas fa-star"></i> 4.5</span>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="cinema-btn-sm">Ver horarios</button>
+                </div>
+            </div>
+
+            <!-- Película 6 -->
+            <div class="cinema-card" onclick="openMovieModal('Dan Da Dan: Evil Eye 2025', 'En el episodio Momo y Okarun viajan a un pueblo con aguas termales para resolver un misterio familiar. Se alojan en una casa alquilada por Jiji, el amigo de la infancia de Momo, pero el viaje se convierte en una pesadilla paranormal', '1h 45m', 'Fuga Yamashiro y Abel Góngora', '2025', 'Accion', 'https://www.journaldugeek.com/app/uploads/2025/06/Dan-Da-Dan-Saison-2.jpg')">
+                <div class="card-header">
+                    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiloMB68XMutQTGQx_3m6ahhR3tnEfWa9kOUj0T4NTk1hW1jRTFqHZmETyiWe7K0r3jDg-ZIRji-NQzJrd-f503qFNRdmg8ElsWIJEjflrTNu9VgwnK9jrw6cAsQzOC5kPTzk0WYGkqs1d9Y9T7jKaXrIC2Tv0d0g_KSxn5IQ-eNdZfIwiB6yAsP7SZEmHq/s16000/IMG_5746.jpeg" alt="Dan Da Dan: Evil Eye 2025" class="movie-poster">
+                </div>
+                <div class="card-body">
+                    <h3>Dan Da Dan: Evil Eye 2025</h3>
+                    <p class="movie-description"> La historia sigue a Momo y Okarun mientras se embarcan en una aventura hacia un pueblo de aguas termales, con el objetivo de descubrir el misterio que rodea a la familia de Okarun. La película está dirigida por Fuga Yamashiro y cuenta con las voces de los actores Wakayama Shion y Natsuki Hanae.</p>
+                    <div class="movie-details">
+                        <span class="duration"><i class="far fa-clock"></i> 1h 45m</span>
+                        <span class="rating"><i class="fas fa-star"></i> 4.9</span>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="cinema-btn-sm">Ver horarios</button>
+                </div>
+            </div>
+
+            <!-- Película 7 -->
+            <div class="cinema-card" onclick="openMovieModal('Cómo entrenar a tu dragón 2025', 'En la accidentada Isla de Berk, donde los vikingos y los dragones han sido enemigos acérrimos durante generaciones, Hipo Horrendo Abadejo III, el ingenioso pero ignorado hijo del jefe Estoico el Vasto, desafía siglos de prácticas tradicionales de lucha contra dragones cuando se hace amigo de Desdentao, un temido dragón Furia Nocturna.', '1h 45m', 'Len Wiseman', '2025', 'Infantil', 'https://imgs.hipertextual.com/wp-content/uploads/2025/05/Como-entrenar-a.-tu-dragon-scaled.jpg')">
+                <div class="card-header">
+                    <img src="https://encuentros.com.bo/wp-content/uploads/2025/06/Como-entrenar-a-tu-dragon.jpeg" alt="Cómo entrenar a tu dragón 2025" class="movie-poster">
+                </div>
+                <div class="card-body">
+                    <h3>Cómo entrenar a tu dragón 2025</h3>
+                    <p class="movie-description">Se trata de una adaptación de acción real de la película animada de DreamWorks Animation de 2010 del mismo nombre</p>
+                    <div class="movie-details">
+                        <span class="duration"><i class="far fa-clock"></i> 1h 45m</span>
+                        <span class="rating"><i class="fas fa-star"></i> 4.2</span>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="cinema-btn-sm">Ver horarios</button>
+                </div>
+            </div>
+
+            <!-- Película 8 -->
+            <div class="cinema-card" onclick="openMovieModal('Thunderbolts', 'En Malasia, Yelena Belova (Florence Pugh) destruye un laboratorio por encargo de la directora de la CIA, Valentina Allegra de Fontaine (Julia Louis-Dreyfus), para ocultar su implicación en el proyecto sobrehumano Sentry del Grupo O.X.E.', '1h 45m', 'Jake Schreier', '2025', 'Accion', 'https://www.rollingstone.com/wp-content/uploads/2024/09/THUNDERBOLTS-TEASER.jpg?crop=0px%2C44px%2C1800px%2C1014px&resize=1600%2C900')">
+                <div class="card-header">
+                    <img src="https://static1.moviewebimages.com/wordpress/wp-content/uploads/2024/09/thunderbolts-poster.jpeg" alt="Thunderbolts" class="movie-poster">
+                </div>
+                <div class="card-body">
+                    <h3>Thunderbolts*</h3>
+                    <p class="movie-description">Los nuevos nuevos Vengadores??</p>
+                    <div class="movie-details">
+                        <span class="duration"><i class="far fa-clock"></i> 1h 45m</span>
+                        <span class="rating"><i class="fas fa-star"></i> 3.9</span>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="cinema-btn-sm">Ver horarios</button>
+                </div>
+            </div>
+
+            <!-- Película 9 -->
+            <div class="cinema-card" onclick="openMovieModal('Ironheart', 'transcurre después de los acontecimientos de Black Panther: Wakanda Forever, enfrenta la tecnología con la magia cuando Riri Williams (Dominique Thorne), una joven y genial inventora decidida a dejar su huella en el mundo, regresa a su ciudad natal, Chicago.', '1h 45m', 'Jake Schreier', '2025', 'Accion', 'https://www.nacionflix.com/__export/1681613462519/sites/debate/img/2023/04/15/iron-heart-serie-marvel-studios_4.jpg_976912859.jpg')">
+                <div class="card-header">
+                    <img src="https://assets-prd.ignimgs.com/2021/11/12/ironheart-1636737412534.jpg" alt="Ironheart" class="movie-poster">
+                </div>
+                <div class="card-body">
+                    <h3>Ironheart</h3>
+                    <p class="movie-description">La sucesora esperitual de Iroman</p>
+                    <div class="movie-details">
+                        <span class="duration"><i class="far fa-clock"></i> 1h 45m</span>
+                        <span class="rating"><i class="fas fa-star"></i> 2.9</span>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="cinema-btn-sm">Ver horarios</button>
+                </div>
+            </div>
+
+            <!-- Película 10 -->
+            <div class="cinema-card" onclick="openMovieModal('Destino final: Lazos de sangre', 'Transporta al público a los inicios del retorcido sentido de la justicia de la Muerte.', '1h 52m', 'Zach Lipovsky & Adam Stein', '2025', 'Terror-Suspenso', 'https://hips.hearstapps.com/hmg-prod/images/tony-todd-destino-final-6-67f3e7ef1c867.jpg?crop=0.564xw:1.00xh;0.110xw,0&resize=980:*')">
+                <div class="card-header">
+                    <img src="https://www.fangoria.com/wp-content/uploads/2025/02/finaldestinationbloodlines-poster.jpg-819x1024.webp" alt="Destino final: Lazos de sangre" class="movie-poster">
+                </div>
+                <div class="card-body">
+                    <h3>Destino final: Lazos de sangre</h3>
+                    <p class="movie-description">La muerte nunca falla, no importa cuantas visiones tengas.</p>
+                    <div class="movie-details">
+                        <span class="duration"><i class="far fa-clock"></i> 1h 52m</span>
+                        <span class="rating"><i class="fas fa-star"></i> 4.5</span>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="cinema-btn-sm">Ver horarios</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grid para películas por género (oculto por defecto) -->
+        <div class="cinema-grid" id="genre-movies-container" style="display: none;">
+            <!-- Se llena dinámicamente con JavaScript -->
+        </div>
+
+        <!-- Grid para películas de "Este fin de semana" (oculto por defecto) -->
+        <div class="cinema-grid" id="weekend-movies-container" style="display: none;">
+            <!-- Se llena dinámicamente con JavaScript -->
+        </div>
+    </div>
+
+    <!-- Modal de película -->
+    <div class="cinema-modal" id="movie-modal">
+        <div class="modal-screen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="modal-title" class="neon-text">Título de la Película</h2>
+                    <button class="close-modal" onclick="closeMovieModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-poster-container">
+                        <img id="modal-poster" src="" alt="Poster de la película" class="modal-poster">
+                        <div class="modal-badge">RECOMENDADA</div>
+                    </div>
+                    <div class="modal-info">
+                        <p id="modal-synopsis" class="synopsis">Sinopsis de la película...</p>
+                        <div class="modal-details">
+                            <div class="detail-group">
+                                <h4><i class="fas fa-user-tie"></i> Director</h4>
+                                <p id="modal-director">Nombre del director</p>
+                            </div>
+                            <div class="detail-group">
+                                <h4><i class="fas fa-calendar-alt"></i> Año</h4>
+                                <p id="modal-year">Año</p>
+                            </div>
+                            <div class="detail-group">
+                                <h4><i class="fas fa-tags"></i> Género</h4>
+                                <p id="modal-genre">Género</p>
+                            </div>
+                            <div class="detail-group">
+                                <h4><i class="far fa-clock"></i> Duración</h4>
+                                <p id="modal-duration">Duración</p>
+                            </div>
+                        </div>
+                        <div class="modal-actions">
+                            <button class="cinema-btn-lg" onclick="goToSchedule()">
+                                <i class="fas fa-ticket-alt"></i> Comprar Boleto
+                            </button>
+                            <button class="cinema-btn-lg trailer-btn">
+                                <i class="fas fa-play"></i> Ver Tráiler
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Estilo de neón oscuro */
+        .cinema-theme {
+            background-color: #0a0a1a;
+            color: #ffffff;
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+        }
+        
+        .cinema-navbar {
+            background: linear-gradient(90deg, #000000 0%, #1a1a2e 100%);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #00ffff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+        }
+        
+        .neon-text {
+            color: #00ffff;
+            text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff;
+            font-weight: 600;
+        }
+        
+        .neon-text-alt {
+            color: #ff6b6b;
+            text-shadow: 0 0 5px #ff6b6b;
+            font-size: 0.8rem;
+        }
+        
+        .nav-btn {
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid #00ffff;
+            color: #ffffff;
+            padding: 8px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav-btn:hover {
+            background: rgba(0, 255, 255, 0.3);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .nav-btn.active {
+            background: #00ffff;
+            color: #000000;
+            font-weight: 600;
+        }
+        
+        .cinema-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px;
+            position: relative;
+        }
+        
+        .cinema-title {
+            color: #00ffff;
+            text-align: center;
+            margin: 0 0 30px 0;
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .cinema-title:after {
+            content: "";
+            display: block;
+            width: 150px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #00ffff, transparent);
+            margin: 15px auto 0;
+        }
+        
+        .cinema-filters {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #00ffff;
+        }
+        
+        .cinema-select {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #00ffff;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            min-width: 200px;
+            cursor: pointer;
+        }
+        
+        .back-button {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid #00ffff;
+            color: #00ffff;
+            padding: 8px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+            z-index: 10;
+        }
+        
+        .back-button:hover {
+            background: rgba(0, 255, 255, 0.3);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .cinema-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+        
+        .cinema-card {
+            background: rgba(30, 30, 60, 0.5);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .cinema-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.2);
+            border-color: #00ffff;
+        }
+        
+        .card-header {
+            position: relative;
+            height: 380px;
+            overflow: hidden;
+        }
+        
+        .movie-poster {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .cinema-card:hover .movie-poster {
+            transform: scale(1.05);
+        }
+        
+        .movie-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #ff6b6b;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        .cinema-card h3 {
+            color: #00ffff;
+            margin: 0 0 10px 0;
+            font-size: 1.3rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .movie-description {
+            color: #cccccc;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            height: 60px;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+        
+        .movie-details {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            color: #aaaaaa;
+            font-size: 0.9rem;
+        }
+        
+        .rating {
+            color: #ffd700;
+        }
+        
+        .card-footer {
+            padding: 0 20px 20px;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .cinema-btn-sm {
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid #00ffff;
+            color: #ffffff;
+            padding: 8px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .cinema-btn-sm:hover {
+            background: rgba(0, 255, 255, 0.3);
+        }
+        
+        /* Estilos del modal */
+        .cinema-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-screen {
+            background: linear-gradient(135deg, #1a1a2e 0%, #0a0a1a 100%);
+            border: 1px solid #00ffff;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 0 40px rgba(0, 255, 255, 0.3);
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        .modal-content {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+        }
+        
+        .close-modal {
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .close-modal:hover {
+            color: #ff6b6b;
+        }
+        
+        .modal-body {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+        
+        @media (min-width: 768px) {
+            .modal-body {
+                flex-direction: row;
+            }
+        }
+        
+        .modal-poster-container {
+            position: relative;
+            flex: 1;
+            min-height: 400px;
+            margin-right: 20px;
+        }
+        
+        .modal-poster {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+        
+        .modal-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: #00ffff;
+            color: #000000;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+        
+        .modal-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .synopsis {
+            line-height: 1.7;
+            margin-bottom: 30px;
+            color: #e0e0e0;
+        }
+        
+        .modal-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .detail-group h4 {
+            color: #00ffff;
+            margin-bottom: 5px;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .detail-group p {
+            margin: 0;
+            color: #ffffff;
+            font-size: 0.95rem;
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: auto;
+        }
+        
+        .cinema-btn-lg {
+            flex: 1;
+            padding: 12px;
+            border-radius: 5px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .cinema-btn-lg {
+            background: #00ffff;
+            color: #000000;
+        }
+        
+        .cinema-btn-lg:hover {
+            background: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 255, 0.4);
+        }
+        
+        .trailer-btn {
+            background: rgba(255, 107, 107, 0.1);
+            border: 1px solid #ff6b6b;
+            color: #ff6b6b;
+        }
+        
+        .trailer-btn:hover {
+            background: rgba(255, 107, 107, 0.3);
+            color: #ffffff;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .cinema-navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .cinema-grid {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            }
+            
+            .modal-poster-container {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+            
+            .modal-actions {
+                flex-direction: column;
+            }
+            
+            .back-button {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin: 0 auto 20px;
+                display: block;
+                width: fit-content;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .cinema-title {
+                font-size: 2rem;
+            }
+            
+            .cinema-filters {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .cinema-card h3 {
+                font-size: 1.1rem;
+            }
+            
+            .modal-details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <script>
+        // Datos de ejemplo para películas por género
+        const genreMovies = {
+            "ciencia_ficcion": [
+                {
+                    title: "Dune: Parte Tres",
+                    description: "Paul Atreides continúa su viaje para unir a los Fremen y detener una guerra galáctica.",
+                    duration: "2h 45m",
+                    rating: "4.9",
+                    image: "https://m.media-amazon.com/images/M/MV5BN2FjNmEyNWMtYzM0ZS00NjIyLTg5YzYtYThlMGVjNzE1OGViXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_FMjpg_UX1000_.jpg"
+                },
+                {
+                    title: "Odisea Estelar",
+                    description: "Un grupo de astronautas descubre una anomalía espacial que podría ser la clave para viajar a otras dimensiones.",
+                    duration: "2h 15m",
+                    rating: "4.7",
+                    image: "https://cdn-uploads.gameblog.fr/img/news/545610_661566a0b67b5.jpg"
+                }
+            ],
+            "infantil": [
+                {
+                    title: "Las Aventuras de Pipo",
+                    description: "Un perro parlante y su amiga humana emprenden un viaje mágico para rescatar a su dueño.",
+                    duration: "1h 35m",
+                    rating: "4.5",
+                    image: "https://ik.imagekit.io/storybird/images/a743c71e-a11d-4351-bb52-de1705c0c43a/0_471558993.webp?tr=q-80"
+                },
+                {
+                    title: "El Reino de Cristal",
+                    description: "Dos hermanos descubren un portal a un mundo mágico donde deben ayudar a unas criaturas de cristal.",
+                    duration: "1h 50m",
+                    rating: "4.6",
+                    image: "https://th.bing.com/th/id/OIP.zJ_jyUSB2ANvP0paMe73FQHaKj?rs=1&pid=ImgDetMain"
+                }
+            ],
+            "accion": [
+                {
+                    title: "Free Guy",
+                    description: "Un equipo de élite debe infiltrarse en una fortaleza inexpugnable para rescatar a un científico.",
+                    duration: "2h 10m",
+                    rating: "4.8",
+                    image: "https://m.media-amazon.com/images/M/MV5BOTY2NzFjODctOWUzMC00MGZhLTlhNjMtM2Y2ODBiNGY1ZWRiXkEyXkFqcGdeQXVyMDM2NDM2MQ@@._V1_.jpg"
+                },
+                {
+                    title: "Guerreros Urbanos",
+                    description: "En una ciudad futurista, un grupo de mercenarios debe unirse para detener a un tirano.",
+                    duration: "2h 05m",
+                    rating: "4.5",
+                    image: "https://th.bing.com/th/id/R.1757e7da450b8bd90ac3a78982a3047a?rik=1gkvp2sIByxZZw&pid=ImgRaw&r=0"
+                },
+                {
+                    title: "Dan Da Dan: Evil Eye 2025",
+                    description: "En el episodio Momo y Okarun viajan a un pueblo con aguas termales para resolver un misterio familiar. Se alojan en una casa alquilada por Jiji, el amigo de la infancia de Momo, pero el viaje se convierte en una pesadilla paranormal",
+                    duration: "2h 05m",
+                    rating: "4.5",
+                    image: "https://pics.filmaffinity.com/dan_da_dan_evil_eye-932347081-large.jpg"
+                },
+            ],
+            "Terror": [
+                {
+                    title: "Until Dawn",
+                    description: " La película está protagonizada por Ella Rubin, Michael Cimino, Ji-young Yoo, Odessa A'zion, que interpretan a un grupo de amigos que terminan en un área aislada con una mecánica de bucle temporal; una amenaza está dispuesta a cazarlos, donde morir reinicia la noche con una nuev.",
+                    duration: "1h 35m",
+                    rating: "4.5",
+                    image: "https://th.bing.com/th/id/OIP.8AQWFqxi9AfNcb3_cbroxwHaJQ?rs=1&pid=ImgDetMain"
+                },
+                {
+                    title: "Five Nights at Freddy's 2",
+                    description: " Es la secuela de Five Nights at Freddy's (2023) y será la segunda entrega de la serie de películas homónima, y que se basa en la serie de videojuegos del mismo nombre.",
+                    duration: "1h 50m",
+                    rating: "4.6",
+                    image: "https://nintenduo.com/wp-content/uploads/2024/10/Poster-de-FNAF-2-La-Pelicula.webp"
+                }
+            ],
+        };
+
+        // Datos para películas de "Este fin de semana"
+        const weekendMovies = [
+            {
+                title: "Una Pelicula de Minecraft",
+                description: "Cuatro inadaptados se ven arrastrados a través de un misterioso portal al Mundo Exterior.",
+                duration: "2h 15m",
+                rating: "4.8",
+                image: "https://www.gamereactor.es/media/54/finalminecraftmovie_4485443.jpg"
+            },
+            {
+                title: "Lilo y Stitch 2025",
+                description: "Narra la historia de una niña hawaiana solitaria y un extraterrestre fugitivo.",
+                duration: "1h 58m",
+                rating: "4.6",
+                image: "https://radiocentro.com.ec/wp-content/uploads/2025/05/LILO-Y-STITCH-LIVE-ACTION.jpg"
+            }
+        ];
+
+        // Función para mostrar películas por género
+        function showGenreMovies(genre) {
+            document.getElementById('main-movies-grid').style.display = 'none';
+            document.getElementById('weekend-movies-container').style.display = 'none';
+            document.getElementById('back-button').style.display = 'block';
+            
+            const container = document.getElementById('genre-movies-container');
+            container.innerHTML = '';
+            container.style.display = 'grid';
+            
+            const movies = genreMovies[genre] || [];
+            
+            movies.forEach(movie => {
+                const card = document.createElement('div');
+                card.className = 'cinema-card';
+                card.onclick = function() {
+                    openMovieModal(
+                        movie.title,
+                        movie.description,
+                        movie.duration,
+                        "Director Ejemplo",
+                        "2025",
+                        "Género",
+                        movie.image
+                    );
+                };
+                card.innerHTML = `
+                    <div class="card-header">
+                        <img src="${movie.image}" alt="${movie.title}" class="movie-poster">
+                    </div>
+                    <div class="card-body">
+                        <h3>${movie.title}</h3>
+                        <p class="movie-description">${movie.description}</p>
+                        <div class="movie-details">
+                            <span class="duration"><i class="far fa-clock"></i> ${movie.duration}</span>
+                            <span class="rating"><i class="fas fa-star"></i> ${movie.rating}</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="cinema-btn-sm">Ver horarios</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Función para mostrar películas del fin de semana
+        function showWeekendMovies() {
+            document.getElementById('main-movies-grid').style.display = 'none';
+            document.getElementById('genre-movies-container').style.display = 'none';
+            document.getElementById('back-button').style.display = 'block';
+            
+            const container = document.getElementById('weekend-movies-container');
+            container.innerHTML = '';
+            container.style.display = 'grid';
+            
+            weekendMovies.forEach(movie => {
+                const card = document.createElement('div');
+                card.className = 'cinema-card';
+                card.onclick = function() {
+                    openMovieModal(
+                        movie.title,
+                        movie.description,
+                        movie.duration,
+                        "Director Ejemplo",
+                        "2025",
+                        "Género",
+                        movie.image
+                    );
+                };
+                card.innerHTML = `
+                    <div class="card-header">
+                        <img src="${movie.image}" alt="${movie.title}" class="movie-poster">
+                        <div class="movie-badge">ESTRENO</div>
+                    </div>
+                    <div class="card-body">
+                        <h3>${movie.title}</h3>
+                        <p class="movie-description">${movie.description}</p>
+                        <div class="movie-details">
+                            <span class="duration"><i class="far fa-clock"></i> ${movie.duration}</span>
+                            <span class="rating"><i class="fas fa-star"></i> ${movie.rating}</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="cinema-btn-sm">Ver horarios</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Función para volver a la cartelera principal
+        function showMainMovies() {
+            document.getElementById('main-movies-grid').style.display = 'grid';
+            document.getElementById('genre-movies-container').style.display = 'none';
+            document.getElementById('weekend-movies-container').style.display = 'none';
+            document.getElementById('back-button').style.display = 'none';
+        }
+
+        // Función para abrir el modal de película
+        function openMovieModal(title, synopsis, duration, director, year, genre, image) {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-synopsis').textContent = synopsis;
+            document.getElementById('modal-duration').textContent = duration;
+            document.getElementById('modal-director').textContent = director;
+            document.getElementById('modal-year').textContent = year;
+            document.getElementById('modal-genre').textContent = genre;
+            document.getElementById('modal-poster').src = image;
+            
+            document.getElementById('movie-modal').style.display = 'flex';
+        }
+
+        function closeMovieModal() {
+            document.getElementById('movie-modal').style.display = 'none';
+        }
+
+        function goToSchedule() {
+            alert('Redirigiendo a la selección de horarios...');
+        }
+
+        // Configurar eventos
+        document.addEventListener('DOMContentLoaded', function() {
+            // Filtro de géneros
+            document.getElementById('genre-filter').addEventListener('change', function() {
+                if(this.value === 'all') {
+                    showMainMovies();
+                } else {
+                    showGenreMovies(this.value);
+                }
+            });
+            
+            // Filtro de estrenos
+            document.getElementById('upcoming-filter').addEventListener('change', function() {
+                if(this.value === 'weekend') {
+                    showWeekendMovies();
+                } else if(this.value === 'all') {
+                    showMainMovies();
+                }
+            });
+            
+            // Cerrar modal al hacer clic fuera
+            document.getElementById('movie-modal').addEventListener('click', function(e) {
+                if(e.target === this) {
+                    closeMovieModal();
+                }
+            });
+        });
+    </script>
+</div>
+
+    <!-- Interfaz 4 - Horarios y Salas -->
+<style>
+    /* Estilo CineStellar - Temática de cine */
+    #schedule-screen {
+        background: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.95)), 
+                    url('https://wallpaperaccess.com/full/3967998.jpg') no-repeat center/cover;
+        min-height: 100vh;
+        color: #fff;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        position: relative;
+        padding-bottom: 60px; /* Espacio para el footer */
+    }
+
+    /* Barra de navegación */
+    .navbar {
+        background: rgba(10, 10, 20, 0.9);
+        padding: 15px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+    }
+
+    .user-info {
+        color: #ffd700;
+    }
+
+    #schedule-display-email {
+        color: #aaa;
+        font-size: 0.8rem;
+        display: block;
+        margin-top: 3px;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 15px;
+    }
+
+    .nav-btn {
+        background: rgba(255, 255, 255, 0.1);
+        color: #ffd700;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .nav-btn:hover {
+        background: rgba(255, 215, 0, 0.2);
+    }
+
+    /* Contenedor principal - centrado */
+    .schedule-container {
+        max-width: 1400px;
+        margin: 30px auto;
+        padding: 0 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* Encabezado */
+    .schedule-header {
+        text-align: center;
+        margin-bottom: 30px;
+        width: 100%;
+    }
+
+    #schedule-movie-title {
+        color: #ffd700;
+        font-size: 2.2rem;
+        margin-bottom: 10px;
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+    }
+
+    .schedule-header p {
+        color: #aaa;
+        font-style: italic;
+    }
+
+    /* Contenedor para horarios y butacas */
+    .schedule-seating-container {
+        display: flex;
+        width: 100%;
+        gap: 30px;
+        margin-bottom: 30px;
+    }
+
+    /* Sección de horarios (moviéndola a la derecha) */
+    .schedule-section {
+        flex: 1;
+        max-width: 40%;
+        margin-left: auto;
+    }
+
+    /* Opciones de horario */
+    .schedule-options {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+
+    .schedule-option {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 215, 0, 0.2);
+        border-radius: 8px;
+        padding: 15px;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-align: center;
+    }
+
+    .schedule-option:hover {
+        background: rgba(255, 215, 0, 0.1);
+        transform: translateY(-3px);
+    }
+
+    .schedule-option.selected {
+        background: rgba(255, 215, 0, 0.15);
+        border: 1px solid #ffd700;
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+    }
+
+    .schedule-option h4 {
+        color: #ffd700;
+        margin-bottom: 5px;
+        font-size: 1.1rem;
+    }
+
+    .schedule-option p {
+        color: #fff;
+        font-size: 1.2rem;
+    }
+
+    /* Sección de selección de butacas */
+    .seating-section {
+        flex: 1;
+        background: rgba(10, 10, 20, 0.8);
+        border-radius: 10px;
+        padding: 25px;
+        border-top: 2px solid #ffd700;
+        max-width: 55%;
+    }
+
+    .seating-section h3 {
+        color: #ffd700;
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 1.5rem;
+    }
+
+    /* Representación de pantalla */
+    .screen {
+        background: linear-gradient(to right, #1a1a2e, #16213e, #1a1a2e);
+        height: 40px;
+        margin: 0 auto 30px;
+        border-radius: 5px;
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        text-align: center;
+        padding: 10px 0;
+        color: #ffd700;
+        font-weight: bold;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        font-size: 1.2rem;
+    }
+
+    /* Contenedor principal de butacas */
+    .seating-area {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        margin: 0 auto;
+        max-width: 600px;
+    }
+
+    /* Fila de butacas */
+    .seat-row {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+    }
+
+    /* Etiqueta de fila */
+    .seat-row-label {
+        color: #ffd700;
+        font-weight: bold;
+        width: 30px;
+        text-align: center;
+        font-size: 1.1rem;
+    }
+
+    /* Butaca individual */
+    .seat {
+        width: 35px;
+        height: 35px;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.2s;
+        position: relative;
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .seat span {
+        position: relative;
+        z-index: 2;
+        color: #fff;
+    }
+
+    .seat.available {
+        background: rgba(76, 175, 80, 0.3);
+        border: 1px solid #4CAF50;
+    }
+
+    .seat.available:hover {
+        transform: scale(1.1);
+        box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+    }
+
+    .seat.selected {
+        background: rgba(255, 215, 0, 0.3);
+        border: 1px solid #ffd700;
+        transform: scale(1.1);
+        box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    }
+
+    .seat.occupied {
+        background: rgba(244, 67, 54, 0.3);
+        border: 1px solid #f44336;
+        cursor: not-allowed;
+    }
+
+    .seat-info {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 25px;
+        flex-wrap: wrap;
+    }
+
+    .seat-info-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .seat-color {
+        width: 20px;
+        height: 20px;
+        border-radius: 3px;
+    }
+
+    .available-color {
+        background: #4CAF50;
+    }
+
+    .selected-color {
+        background: #ffd700;
+    }
+
+    .occupied-color {
+        background: #f44336;
+    }
+
+    /* Selección de boletos */
+    .ticket-selection {
+        background: rgba(10, 10, 20, 0.8);
+        border-radius: 10px;
+        padding: 25px;
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+        border-top: 2px solid #ffd700;
+    }
+
+    .ticket-selection h3 {
+        color: #ffd700;
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 1.5rem;
+    }
+
+    .ticket-controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .ticket-type {
+        color: #fff;
+        font-weight: bold;
+    }
+
+    .ticket-quantity {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .quantity-btn {
+        background: rgba(255, 255, 255, 0.1);
+        color: #ffd700;
+        border: none;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.3s;
+    }
+
+    .quantity-btn:hover {
+        background: rgba(255, 215, 0, 0.3);
+    }
+
+    .quantity-value {
+        min-width: 20px;
+        text-align: center;
+    }
+
+    .confirm-btn {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(to right, #ff8c00, #ffd700);
+        color: #111;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: 20px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .confirm-btn:hover {
+        background: linear-gradient(to right, #ffd700, #ff8c00);
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+    }
+    
+    /* Footer de copyright */
+    .cine-footer {
+        position: absolute;
+        bottom: 20px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        color: #ffd700; /* Color dorado como "CineStellar" */
+        font-size: 0.8rem;
+        text-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
+        padding: 0 20px;
+    }
+    
+    .cine-footer span {
+        font-style: italic;
+    }
+</style>
+
+<div id="schedule-screen">
+    <nav class="navbar">
+        <div class="user-info">
+            <span id="schedule-display-name">Usuario</span>
+            <span id="schedule-display-email">usuario@example.com</span>
+        </div>
+        <div class="nav-links">
+            <button class="nav-btn" id="schedule-home-btn">Inicio</button>
+            <button class="nav-btn" id="schedule-movies-btn">Cartelera</button>
+            <button class="nav-btn" id="schedule-payments-btn">Pagos Electrónicos</button>
+        </div>
+    </nav>
+
+    <div class="schedule-container">
+        <div class="schedule-header">
+            <h2 id="schedule-movie-title">El Último Viaje</h2>
+            <p>Selecciona un horario, sala y butacas para tu función</p>
+        </div>
+
+        <div class="schedule-seating-container">
+            <!-- Sección de butacas -->
+            <div class="seating-section">
+                <h3>Selección de Butacas</h3>
+                <div class="screen">P A N T A L L A</div>
+                <div class="seating-area">
+                    <!-- Fila A -->
+                    <div class="seat-row">
+                        <div class="seat-row-label">A</div>
+                        <div class="seat available" onclick="selectSeat(this)"><span>1</span></div>
+                        <div class="seat available" onclick="selectSeat(this)"><span>2</span></div>
+                        <div class="seat occupied" onclick="selectSeat(this)"><span>3</span></div>
+                        <div class="seat available" onclick="selectSeat(this)"><span>4</span></div>
+                        <div class="seat available" onclick="selectSeat(this)"><span>5</span></div>
+                        <div class="seat occupied" onclick="selectSeat(this)"><span>6</span></div>
+                        <div class="seat available" onclick="selectSeat(this)"><span>7</span></div>
+                        <div class="seat available" onclick="selectSeat(this)"><span>8</span></div>
+                        <div class="seat occupied" onclick="selectSeat(this)"><span>9</span></div>
+                        <div class="seat available" onclick="selectSeat(this)"><span>10</span></div>
+                    </div>
+                    
+                    <!-- Fila B -->
+                    <div class="seat-row">
+                        <div class="seat-row-label">B</div>
+                        <div class="seat available" onclick="selectSeat(this)"><span>1</span></div>
+                        <div class="seat occupied" onclick="selectSeat(this)"><span>2</span></div>
+                        <div class="seat occupied" onclick="selectSeat(this)"><span>3</span></div>
+                        <div class="seat available" onclick="selectSeat(this)"><span>4</span></div>
+                        <div class="seat available" onclick="selectSeat(this)"><span>5</span></div>
+                        <div class="seat available" onclick="selectSeat(this)"><span>6</span></div>
+                        <div class="seat available" onclick="selectSeat(this)"><span>7</span></div>
+                        <div class="seat occupied" onclick="selectSeat(this)"><span>8</span></div>
+                        <div class="seat available" onclick="selectSeat(this)"><span>9</span></div>
+                        <div class="seat available" onclick="selectSeat(this)"><span>10</span></div>
+                    </div>
+                    
+                    <!-- Fila C -->
+                    <div class="seat-row">
+                        <div class="seat-row-label">C</div>
+                        <div class="seat available" onclick="selectSeat(this)"><span>1</span></div>
+                        <div class="seat available" onclick="selectSeat(this)"><span>2</span></div>
+                        <div class="seat available" onclick="selectSeat(this)"><span>3</span></div>
+                        <div class="seat occupied" onclick="selectSeat(this)"><span>4</span></div>
+                        <div class="seat occupied" onclick="selectSeat(this)"><span>5</span></div>
+                        <div class="seat occupied" onclick="selectSeat(this)"><span>6</span></div>
+                        <div class="seat occupied" onclick="selectSeat(this)"><span>7</span></div>
+                        <div class="seat available" onclick="selectSeat(this)"><span>8</span></div>
+                        <div class="seat available" onclick="selectSeat(this)"><span>9</span></div>
+                        <div class="seat available" onclick="selectSeat(this)"><span>10</span></div>
+                    </div>
+                    
+                    <!-- Fila D -->
+                    <div class="seat-row">
+                        <div class="seat-row-label">D</div>
+                        <div class="seat available" onclick="selectSeat(this)"><span>1</span></div>
+                        <div class="seat available" onclick="selectSeat(this)"><span>2</span></div>
+                        <div class="seat available" onclick="selectSeat(this)"><span>3</span></div>
+                        <div class="seat available" onclick="selectSeat(this)"><span>4</span></div>
+                        <div class="seat available" onclick="selectSeat(this)"><span>5</span></div>
+                        <div class="seat available" onclick="selectSeat(this)"><span>6</span></div>
+                        <div class="seat available" onclick="selectSeat(this)"><span>7</span></div>
+                        <div class="seat available" onclick="selectSeat(this)"><span>8</span></div>
+                        <div class="seat available" onclick="selectSeat(this)"><span>9</span></div>
+                        <div class="seat available" onclick="selectSeat(this)"><span>10</span></div>
+                    </div>
+                    
+                    <!-- Fila E -->
+                    <div class="seat-row">
+                        <div class="seat-row-label">E</div>
+                        <div class="seat occupied" onclick="selectSeat(this)"><span>1</span></div>
+                        <div class="seat occupied" onclick="selectSeat(this)"><span>2</span></div>
+                        <div class="seat occupied" onclick="selectSeat(this)"><span>3</span></div>
+                        <div class="seat available" onclick="selectSeat(this)"><span>4</span></div>
+                        <div class="seat available" onclick="selectSeat(this)"><span>5</span></div>
+                        <div class="seat available" onclick="selectSeat(this)"><span>6</span></div>
+                        <div class="seat available" onclick="selectSeat(this)"><span>7</span></div>
+                        <div class="seat occupied" onclick="selectSeat(this)"><span>8</span></div>
+                        <div class="seat occupied" onclick="selectSeat(this)"><span>9</span></div>
+                        <div class="seat occupied" onclick="selectSeat(this)"><span>10</span></div>
+                    </div>
+                </div>
+                
+                <div class="seat-info">
+                    <div class="seat-info-item">
+                        <div class="seat-color available-color"></div>
+                        <span>Disponible</span>
+                    </div>
+                    <div class="seat-info-item">
+                        <div class="seat-color selected-color"></div>
+                        <span>Seleccionada</span>
+                    </div>
+                    <div class="seat-info-item">
+                        <div class="seat-color occupied-color"></div>
+                        <span>Ocupada</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sección de horarios (a la derecha) -->
+            <div class="schedule-section">
+                <div class="schedule-options">
+                    <div class="schedule-option selected" onclick="selectSchedule(this)">
+                        <h4>Sala 1 - Premium</h4>
+                        <p>3:00 PM</p>
+                    </div>
+                    <div class="schedule-option" onclick="selectSchedule(this)">
+                        <h4>Sala 3 - Estándar</h4>
+                        <p>5:30 PM</p>
+                    </div>
+                    <div class="schedule-option" onclick="selectSchedule(this)">
+                        <h4>Sala 2 - Dolby Atmos</h4>
+                        <p>6:45 PM</p>
+                    </div>
+                    <div class="schedule-option" onclick="selectSchedule(this)">
+                        <h4>Sala 4 - Estándar</h4>
+                        <p>8:15 PM</p>
+                    </div>
+                    <div class="schedule-option" onclick="selectSchedule(this)">
+                        <h4>Sala 1 - Premium</h4>
+                        <p>9:30 PM</p>
+                    </div>
+                </div>
+
+                <div class="ticket-selection">
+                    <h3>Selección de Boletos</h3>
+                    
+                    <div class="ticket-controls">
+                        <div class="ticket-type">General</div>
+                        <div class="ticket-quantity">
+                            <button class="quantity-btn" onclick="adjustQuantity(this, -1)">-</button>
+                            <span class="quantity-value">0</span>
+                            <button class="quantity-btn" onclick="adjustQuantity(this, 1)">+</button>
+                        </div>
+                    </div>
+                    
+                    <div class="ticket-controls">
+                        <div class="ticket-type">Niños</div>
+                        <div class="ticket-quantity">
+                            <button class="quantity-btn" onclick="adjustQuantity(this, -1)">-</button>
+                            <span class="quantity-value">0</span>
+                            <button class="quantity-btn" onclick="adjustQuantity(this, 1)">+</button>
+                        </div>
+                    </div>
+                    
+                    <div class="ticket-controls">
+                        <div class="ticket-type">Tercera Edad</div>
+                        <div class="ticket-quantity">
+                            <button class="quantity-btn" onclick="adjustQuantity(this, -1)">-</button>
+                            <span class="quantity-value">0</span>
+                            <button class="quantity-btn" onclick="adjustQuantity(this, 1)">+</button>
+                        </div>
+                    </div>
+                    
+                    <button class="confirm-btn" onclick="goToPayment()">Confirmar y Pagar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer añadido -->
+    <div class="cine-footer">
+        &copy; 2023 <span>CineStellar El Salvador</span>. Todos los derechos reservados.
+    </div>
+</div>
+
+<script>
+    // Función para seleccionar un horario
+    function selectSchedule(element) {
+        // Quitar la clase 'selected' de todos los elementos
+        const options = document.querySelectorAll('.schedule-option');
+        options.forEach(option => {
+            option.classList.remove('selected');
+        });
+        
+        // Añadir la clase 'selected' al elemento clickeado
+        element.classList.add('selected');
+    }
+    
+    // Función para seleccionar una butaca
+    function selectSeat(element) {
+        // Solo permitir seleccionar butacas disponibles
+        if (element.classList.contains('available')) {
+            element.classList.toggle('selected');
+        }
+    }
+    
+    // Función para ajustar la cantidad de boletos
+    function adjustQuantity(button, change) {
+        const quantityElement = button.parentElement.querySelector('.quantity-value');
+        let quantity = parseInt(quantityElement.textContent);
+        
+        quantity += change;
+        
+        // No permitir valores negativos
+        if (quantity < 0) quantity = 0;
+        
+        quantityElement.textContent = quantity;
+    }
+    
+    // Función para ir al pago
+    function goToPayment() {
+        alert('Redirigiendo a pantalla de pago...');
+    }
+</script>
+
+    <!-- Interfaz 5 - Pago -->
+<style>
+    /* Estilo CineStellar - Temática de cine para Pago */
+    #payment-screen {
+        background: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.95)), 
+                    url('https://www.tapeciarnia.pl/tapety/normalne/138322_klisza_filmowa_film_aparat_grafika.jpg') no-repeat center/cover;
+        min-height: 100vh;
+        color: #fff;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* Barra de navegación */
+    .navbar {
+        background: rgba(10, 10, 20, 0.9);
+        padding: 15px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+    }
+
+    .user-info {
+        color: #ffd700;
+    }
+
+    #payment-display-email {
+        color: #aaa;
+        font-size: 0.8rem;
+        display: block;
+        margin-top: 3px;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 15px;
+    }
+
+    .nav-btn {
+        background: rgba(255, 255, 255, 0.1);
+        color: #ffd700;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .nav-btn:hover {
+        background: rgba(255, 215, 0, 0.2);
+    }
+
+    /* Contenedor principal */
+    .payment-container {
+        max-width: 800px;
+        margin: 30px auto;
+        padding: 0 20px;
+    }
+
+    /* Encabezado */
+    .payment-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .payment-header h2 {
+        color: #ffd700;
+        font-size: 2.2rem;
+        margin-bottom: 10px;
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+    }
+
+    .payment-header p {
+        color: #aaa;
+        font-style: italic;
+    }
+
+    /* Métodos de pago */
+    .payment-methods {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+    }
+
+    .payment-method {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 215, 0, 0.2);
+        border-radius: 8px;
+        padding: 15px;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-align: center;
+        width: 100px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .payment-method:hover {
+        background: rgba(255, 215, 0, 0.1);
+        transform: translateY(-3px);
+    }
+
+    .payment-method.selected {
+        background: rgba(255, 215, 0, 0.15);
+        border: 1px solid #ffd700;
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+    }
+
+    .payment-method img {
+        max-width: 100%;
+        max-height: 30px;
+    }
+
+    /* Formulario de pago */
+    .payment-form {
+        background: rgba(10, 10, 20, 0.8);
+        border-radius: 10px;
+        padding: 25px;
+        border-top: 2px solid #ffd700;
+        margin-bottom: 30px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #ffd700;
+    }
+
+    .payment-form input {
+        width: 100%;
+        padding: 12px 15px;
+        border: none;
+        border-radius: 5px;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border-left: 3px solid transparent;
+        transition: all 0.3s;
+    }
+
+    .payment-form input:focus {
+        outline: none;
+        border-left: 3px solid #ffd700;
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    .payment-form input::placeholder {
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    .form-row {
+        display: flex;
+        gap: 20px;
+    }
+
+    .form-row .form-group {
+        flex: 1;
+    }
+
+    .complete-payment-btn {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(to right, #ff8c00, #ffd700);
+        color: #111;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: 20px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .complete-payment-btn:hover {
+        background: linear-gradient(to right, #ffd700, #ff8c00);
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+    }
+
+    /* Mensaje de confirmación */
+    .confirmation-message {
+        background: rgba(10, 30, 10, 0.8);
+        border-radius: 10px;
+        padding: 25px;
+        text-align: center;
+        border-top: 2px solid #4CAF50;
+        display: none;
+    }
+
+    .confirmation-message p {
+        margin-bottom: 15px;
+        line-height: 1.6;
+    }
+
+    #confirmation-email {
+        color: #ffd700;
+        font-weight: bold;
+    }
+</style>
+
+<div id="payment-screen">
+    <nav class="navbar">
+        <div class="user-info">
+            <span id="payment-display-name">Usuario</span>
+            <span id="payment-display-email">usuario@example.com</span>
+        </div>
+        <div class="nav-links">
+            <button class="nav-btn" id="payment-home-btn">Inicio</button>
+            <button class="nav-btn" id="payment-movies-btn">Cartelera</button>
+            <button class="nav-btn" id="payment-payments-btn">Pagos Electrónicos</button>
+        </div>
+    </nav>
+
+    <div class="payment-container">
+        <div class="payment-header">
+            <h2>Pago Electrónico</h2>
+            <p>Completa tus datos para finalizar la compra</p>
+        </div>
+
+        <div class="payment-methods">
+            <div class="payment-method selected" onclick="selectPaymentMethod(this)">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa">
+            </div>
+            <div class="payment-method" onclick="selectPaymentMethod(this)">
+                <img src="https://www.pngitem.com/pimgs/m/1-18701_mastercard-logo-logo-mastercard-2019-png-transparent-png.png" alt="Mastercard">
+            </div>
+            <div class="payment-method" onclick="selectPaymentMethod(this)">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/American_Express_logo_%282018%29.svg" alt="American Express">
+            </div>
+            <div class="payment-method" onclick="selectPaymentMethod(this)">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+            </div>
+        </div>
+
+        <form class="payment-form">
+            <div class="form-group">
+                <label for="card-number">Número de Tarjeta</label>
+                <input type="text" id="card-number" placeholder="1234 5678 9012 3456" required>
+            </div>
+
+            <div class="form-group">
+                <label for="card-name">Nombre del Titular de la Tarjeta</label>
+                <input type="text" id="card-name" placeholder="JUAN PEREZ" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="card-expiry">Fecha de Expiración</label>
+                    <input type="text" id="card-expiry" placeholder="MM/AA" required>
+                </div>
+                <div class="form-group">
+                    <label for="card-cvv">CVV</label>
+                    <input type="text" id="card-cvv" placeholder="123" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="card-email">Correo Electrónico para Factura</label>
+                <input type="email" id="card-email" required>
+            </div>
+
+            <button type="button" class="complete-payment-btn" onclick="completePayment()">Completar Pago</button>
+        </form>
+
+        <div class="confirmation-message" id="confirmation-message">
+            <p>¡Pago completado con éxito!</p>
+            <p>Tu factura ha sido enviada a <span id="confirmation-email">usuario@example.com</span></p>
+            <p>Gracias por tu compra. ¡Disfruta de la película!</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Variables globales
+    let currentUser = {
+        name: '',
+        email: ''
+    };
+
+    let selectedMovie = {
+        title: '',
+        time: '',
+        sala: '',
+        tickets: {
+            general: 0,
+            niños: 0,
+            terceraEdad: 0
+        }
+    };
+
+    // Inicialización
+    document.addEventListener('DOMContentLoaded', function() {
+        // Eventos del formulario de login
+        const loginForm = document.getElementById('login-form');
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            validateLoginForm();
+        });
+
+        // Eventos de los botones de navegación
+        setupNavigationButtons();
+    });
+
+    // Validación del formulario de login
+    function validateLoginForm() {
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        let isValid = true;
+
+        // Validar nombre
+        if (name === '') {
+            document.getElementById('name-error').style.display = 'block';
+            isValid = false;
+        } else {
+            document.getElementById('name-error').style.display = 'none';
+        }
+
+        // Validar email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            document.getElementById('email-error').style.display = 'block';
+            isValid = false;
+        } else {
+            document.getElementById('email-error').style.display = 'none';
+        }
+
+        // Si es válido, iniciar sesión
+        if (isValid) {
+            currentUser.name = name;
+            currentUser.email = email;
+            login();
+        }
+    }
+
+    // Función de login
+    function login() {
+        // Ocultar pantalla de login
+        document.getElementById('login-screen').style.display = 'none';
+        
+        // Actualizar información del usuario en todas las pantallas
+        updateUserInfo();
+        
+        // Mostrar dashboard
+        document.getElementById('dashboard-screen').style.display = 'block';
+    }
+
+    // Actualizar información del usuario en todas las pantallas
+    function updateUserInfo() {
+        // Dashboard
+        document.getElementById('display-name').textContent = currentUser.name;
+        document.getElementById('display-email').textContent = currentUser.email;
+        
+        // Cartelera
+        document.getElementById('movies-display-name').textContent = currentUser.name;
+        document.getElementById('movies-display-email').textContent = currentUser.email;
+        
+        // Horarios
+        document.getElementById('schedule-display-name').textContent = currentUser.name;
+        document.getElementById('schedule-display-email').textContent = currentUser.email;
+        
+        // Pago
+        document.getElementById('payment-display-name').textContent = currentUser.name;
+        document.getElementById('payment-display-email').textContent = currentUser.email;
+        document.getElementById('card-email').value = currentUser.email;
+    }
+
+    // Configurar eventos de los botones de navegación
+    function setupNavigationButtons() {
+        // Botones del dashboard
+        document.getElementById('home-btn').addEventListener('click', function() {
+            showScreen('dashboard-screen');
+        });
+        
+        document.getElementById('movies-btn').addEventListener('click', function() {
+            showScreen('movies-screen');
+        });
+        
+        document.getElementById('payments-btn').addEventListener('click', function() {
+            showScreen('payment-screen');
+        });
+        
+        // Botones de la cartelera
+        document.getElementById('movies-home-btn').addEventListener('click', function() {
+            showScreen('dashboard-screen');
+        });
+        
+        document.getElementById('movies-movies-btn').addEventListener('click', function() {
+            showScreen('movies-screen');
+        });
+        
+        document.getElementById('movies-payments-btn').addEventListener('click', function() {
+            showScreen('payment-screen');
+        });
+        
+        // Botones de horarios
+        document.getElementById('schedule-home-btn').addEventListener('click', function() {
+            showScreen('dashboard-screen');
+        });
+        
+        document.getElementById('schedule-movies-btn').addEventListener('click', function() {
+            showScreen('movies-screen');
+        });
+        
+        document.getElementById('schedule-payments-btn').addEventListener('click', function() {
+            showScreen('payment-screen');
+        });
+        
+        // Botones de pago
+        document.getElementById('payment-home-btn').addEventListener('click', function() {
+            showScreen('dashboard-screen');
+        });
+        
+        document.getElementById('payment-movies-btn').addEventListener('click', function() {
+            showScreen('movies-screen');
+        });
+        
+        document.getElementById('payment-payments-btn').addEventListener('click', function() {
+            showScreen('payment-screen');
+        });
+    }
+
+    // Mostrar una pantalla específica y ocultar las demás
+    function showScreen(screenId) {
+        // Ocultar todas las pantallas
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('dashboard-screen').style.display = 'none';
+        document.getElementById('movies-screen').style.display = 'none';
+        document.getElementById('schedule-screen').style.display = 'none';
+        document.getElementById('payment-screen').style.display = 'none';
+        
+        // Mostrar la pantalla solicitada
+        document.getElementById(screenId).style.display = 'block';
+    }
+
+    // Abrir modal de película
+    function openMovieModal(title, synopsis, duration, director, year, genre, poster) {
+        // Guardar la película seleccionada
+        selectedMovie.title = title;
+        
+        // Actualizar el modal con la información de la película
+        document.getElementById('modal-title').textContent = title;
+        document.getElementById('modal-synopsis').textContent = synopsis;
+        document.getElementById('modal-duration').textContent = duration;
+        document.getElementById('modal-director').textContent = director;
+        document.getElementById('modal-year').textContent = year;
+        document.getElementById('modal-genre').textContent = genre;
+        document.getElementById('modal-poster').src = poster;
+        
+        // Mostrar el modal
+        document.getElementById('movie-modal').style.display = 'block';
+    }
+
+    // Cerrar modal de película
+    function closeMovieModal() {
+        document.getElementById('movie-modal').style.display = 'none';
+    }
+
+    // Ir a la pantalla de horarios
+    function goToSchedule() {
+        // Actualizar el título de la película en la pantalla de horarios
+        document.getElementById('schedule-movie-title').textContent = selectedMovie.title;
+        
+        // Cerrar el modal y mostrar la pantalla de horarios
+        closeMovieModal();
+        showScreen('schedule-screen');
+    }
+
+    // Seleccionar horario y sala
+    function selectSchedule(element) {
+        // Quitar la clase 'selected' de todos los elementos
+        const options = document.querySelectorAll('.schedule-option');
+        options.forEach(option => {
+            option.classList.remove('selected');
+        });
+        
+        // Añadir la clase 'selected' al elemento clickeado
+        element.classList.add('selected');
+        
+        // Guardar la selección
+        const salaTime = element.querySelector('h4').textContent.split(' - ');
+        selectedMovie.sala = salaTime[0];
+        selectedMovie.time = element.querySelector('p').textContent;
+    }
+
+    // Ajustar cantidad de boletos
+    function adjustQuantity(button, change) {
+        const quantityElement = button.parentElement.querySelector('.quantity-value');
+        let quantity = parseInt(quantityElement.textContent);
+        
+        quantity += change;
+        
+        // No permitir valores negativos
+        if (quantity < 0) quantity = 0;
+        
+        quantityElement.textContent = quantity;
+        
+        // Actualizar el objeto selectedMovie
+        const ticketType = button.closest('.ticket-controls').querySelector('.ticket-type').textContent.toLowerCase();
+        if (ticketType === 'general') {
+            selectedMovie.tickets.general = quantity;
+        } else if (ticketType === 'niños') {
+            selectedMovie.tickets.niños = quantity;
+        } else if (ticketType === 'tercera edad') {
+            selectedMovie.tickets.terceraEdad = quantity;
+        }
+    }
+
+    // Ir a la pantalla de pago
+    function goToPayment() {
+        // Verificar que se haya seleccionado al menos un boleto
+        const totalTickets = selectedMovie.tickets.general + selectedMovie.tickets.niños + selectedMovie.tickets.terceraEdad;
+        if (totalTickets === 0) {
+            alert('Por favor selecciona al menos un boleto');
+            return;
+        }
+        
+        // Verificar que se haya seleccionado un horario
+        if (!selectedMovie.time || !selectedMovie.sala) {
+            alert('Por favor selecciona un horario y sala');
+            return;
+        }
+        
+        // Mostrar pantalla de pago
+        showScreen('payment-screen');
+    }
+
+    // Seleccionar método de pago
+    function selectPaymentMethod(element) {
+        // Quitar la clase 'selected' de todos los elementos
+        const methods = document.querySelectorAll('.payment-method');
+        methods.forEach(method => {
+            method.classList.remove('selected');
+        });
+        
+        // Añadir la clase 'selected' al elemento clickeado
+        element.classList.add('selected');
+    }
+
+    // Completar pago
+    function completePayment() {
+        // Validar formulario de pago
+        const cardNumber = document.getElementById('card-number').value.trim();
+        const cardName = document.getElementById('card-name').value.trim();
+        const cardExpiry = document.getElementById('card-expiry').value.trim();
+        const cardCvv = document.getElementById('card-cvv').value.trim();
+        
+        if (!cardNumber || !cardName || !cardExpiry || !cardCvv) {
+            alert('Por favor completa todos los campos de la tarjeta');
+            return;
+        }
+        
+        // Mostrar mensaje de confirmación
+        document.getElementById('confirmation-email').textContent = currentUser.email;
+        document.getElementById('confirmation-message').style.display = 'block';
+        
+        // Desplazar hacia el mensaje de confirmación
+        document.getElementById('confirmation-message').scrollIntoView({ behavior: 'smooth' });
+    }
+    </script>
+</body>
+</html>
